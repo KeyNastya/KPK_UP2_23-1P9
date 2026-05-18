@@ -10,7 +10,6 @@ class BaseModel(Model):
 
 class Role(BaseModel):
     name = CharField(max_length=255, unique=True)
-    description = CharField(max_length=255, null=True)
 
 
 class Access(BaseModel):

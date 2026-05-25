@@ -9,7 +9,7 @@ class BaseModel(Model):
 
 
 class Role(BaseModel):
-    name = CharField(max_length=255, unique=True)
+    name = CharField(min_length=1, max_length=255, unique=True)
 
 
 class Access(BaseModel):

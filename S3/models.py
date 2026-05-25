@@ -1,4 +1,4 @@
-from peewee import SqliteDatabase, Model, CharField, ForeignKeyField
+from peewee import SqliteDatabase, Model, CharField, IntegerField, ForeignKeyField
 
 database = SqliteDatabase("roles.db")
 
@@ -14,14 +14,14 @@ class Role(BaseModel):
 
 class Access(BaseModel):
     role = ForeignKeyField(Role, backref='users', on_delete='CASCADE')
-    user = ForeignKeyField(User, backref='roles', on_delete='CASCADE')
+    user = IntegerField(unique=True)
 
 
 def init_db():
     database.connect()
     database.create_tables([Role, Access], safe=True)
     for name in ["Admin", "Director", "HeadTeacher", "Teacher", "Student", "Parent"]:
-        Role.get_or_create(name=name, defaults={"description": f"Role {name}"})
+        Role.get_or_create(name=name)
     database.close()
 
 

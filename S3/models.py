@@ -9,12 +9,12 @@ class BaseModel(Model):
 
 
 class Role(BaseModel):
-    name = CharField(min_length=1, max_length=255, unique=True)
+    name = CharField(unique=True)
 
 
 class Access(BaseModel):
     role = ForeignKeyField(Role, backref='users', on_delete='CASCADE')
-    user = IntegerField(unique=True)
+    user = IntegerField()
 
 
 def init_db():

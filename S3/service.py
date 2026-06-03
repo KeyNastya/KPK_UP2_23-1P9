@@ -159,11 +159,13 @@ def list_roles(
         {"id": 2, "name": "Director"}
     ]
     """
+    if limit is not None and limit < 1:
+        raise HTTPException(status_code=400, detail="limit must be >= 1")
     query = Role.select()
     if name:
         query = query.where(Role.name.contains(name))
-    if limit is not None and limit < 1:
-        raise HTTPException(status_code=400, detail="limit must be >= 1")
+    if limit:
+        query = query.limit(limit)
     return [RoleResponse(id=role.id, name=role.name) for role in query]
 
 

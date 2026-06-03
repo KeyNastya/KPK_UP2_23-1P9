@@ -75,11 +75,11 @@ erDiagram
         string name
     }
 
-    Access {
+    UserRole {
         int id PK
         int role_id FK
         int user_id FK
     }
 
-    Role ||--o{ Access : имеет
+    Role ||--o{ UserRole : имеет
                                                                 

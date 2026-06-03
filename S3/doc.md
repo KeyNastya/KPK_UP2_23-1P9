@@ -33,7 +33,7 @@
 |name|str|
 
 ## Удалить Role по ID (delete)
-Вернет True, если Role была закрыта (удалена), иначе вернет False
+Вернет True, если Role была удалена, иначе вернет False, используется жесткое удаление
 
 эндпоинт: /roles/{id}
 метод: DELETE
@@ -68,5 +68,19 @@
 
 ## ER-диаграмма
 
-![ER-диаграмма](erd.png)
+```mermaid
+erDiagram
+    Role {
+        int id PK
+        string name
+    }
+
+    Access {
+        int id PK
+        int role_id FK
+        int user_id FK
+    }
+
+    Role ||--o{ Access : имеет
+    Access }o--|| User : имеет
                                                                 

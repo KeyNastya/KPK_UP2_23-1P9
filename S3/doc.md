@@ -82,5 +82,4 @@ erDiagram
     }
 
     Role ||--o{ Access : имеет
-    Access }o--|| User : имеет
                                                                 

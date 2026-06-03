@@ -141,8 +141,8 @@ def get_role(role_id: int):
 
 @app.get("/roles", response_model=List[RoleResponse])
 def list_roles(
-    name: Optional[str] = Query(None, description="Частичное совпадение имени"),
-    limit: Optional[int] = Query(None, description="Лимит количества записей", ge=1)
+    name: Optional[str] = Query(None),
+    limit: Optional[int] = Query(None, description="Лимит количества записей")
 ):
     """
     Получение списка ролей по заданным параметрам
@@ -162,8 +162,8 @@ def list_roles(
     query = Role.select()
     if name:
         query = query.where(Role.name.contains(name))
-    if limit:
-        query = query.limit(limit)
+    if limit is not None and limit < 1:
+        raise HTTPException(status_code=400, detail="limit must be >= 1")
     return [RoleResponse(id=role.id, name=role.name) for role in query]
 
 

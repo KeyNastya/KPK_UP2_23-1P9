@@ -13,8 +13,8 @@ class Role(BaseModel):
 
 
 class UserRole(BaseModel):
-    role = ForeignKeyField(Role, backref='users', on_delete='CASCADE')
-    user = IntegerField()
+    role_id = ForeignKeyField(Role, backref='users', on_delete='CASCADE')
+    user_id = IntegerField()
 
 
 def init_db():

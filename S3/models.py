@@ -20,6 +20,7 @@ class UserRole(BaseModel):
 def init_db():
     database.connect()
     database.create_tables([Role, UserRole], safe=True)
+    # Создание ролей согласно требованиям: Админ, Директор, Завуч, Преподаватель, Студент, Родитель
     for name in ["Admin", "Director", "HeadTeacher", "Teacher", "Student", "Parent"]:
         Role.get_or_create(name=name)
     database.close()

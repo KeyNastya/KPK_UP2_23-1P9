@@ -33,7 +33,8 @@
 |name|str|
 
 ## Удалить Role по ID (delete)
-Вернет True, если Role была удалена, иначе вернет False, используется жесткое удаление
+Вернет True, если Role была удалена, иначе вернет False.
+Для Role Service is_active не требуется, используется жесткое удаление.
 
 эндпоинт: /roles/{id}
 метод: DELETE
@@ -81,5 +82,5 @@ erDiagram
         int user_id FK
     }
 
-    Role ||--o{ UserRole : имеет
+    Role ||--o{ UserRole : "id → role_id"
                                                                 

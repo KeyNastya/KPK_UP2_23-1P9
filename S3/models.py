@@ -12,14 +12,14 @@ class Role(BaseModel):
     name = CharField(unique=True)
 
 
-class Access(BaseModel):
+class UserRole(BaseModel):
     role = ForeignKeyField(Role, backref='users', on_delete='CASCADE')
     user = IntegerField()
 
 
 def init_db():
     database.connect()
-    database.create_tables([Role, Access], safe=True)
+    database.create_tables([Role, UserRole], safe=True)
     for name in ["Admin", "Director", "HeadTeacher", "Teacher", "Student", "Parent"]:
         Role.get_or_create(name=name)
     database.close()

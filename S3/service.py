@@ -91,6 +91,7 @@ def update_role(role_id: int, data: RoleUpdate):
     """
     role = get_role_by_id(role_id)
     if data.name:
+        # Проверяем уникальность нового имени
         check_name_unique(data.name, exclude_id=role_id)
         role.name = data.name
         role.save()
@@ -108,6 +109,9 @@ def delete_role(role_id: int):
     **Назначение:** Физическое удаление роли из базы данных
     **Ошибки:**
         - 404: Роль с указанным ID не найдена
+    **Возвращаемое значение:**
+        - {"success": true} - роль успешно удалена
+        - {"success": false} - роль не найдена (не возникает, т.к. выбрасывается 404)
     **Пример ответа (200):**
     {
         "success": true
@@ -141,15 +145,17 @@ def get_role(role_id: int):
 
 @app.get("/roles", response_model=List[RoleResponse])
 def list_roles(
-    name: Optional[str] = Query(None),
-    limit: Optional[int] = Query(None, description="Лимит количества записей")
+    name: Optional[str] = Query(None, description="Фильтр по имени роли (частичное совпадение)"),
+    limit: Optional[int] = Query(None, description="Лимит количества записей (должен быть >= 1)", ge=1)
 ):
     """
     Получение списка ролей по заданным параметрам
     ---
     **Метод:** GET
     **Эндпоинт:** /roles
-    **Параметры запроса:** query-параметры name (опционально), limit (опционально)
+    **Параметры запроса:** 
+        - name (опционально) - фильтр по имени роли (частичное совпадение)
+        - limit (опционально) - лимит количества записей (должен быть >= 1)
     **Назначение:** Получение списка ролей с возможностью фильтрации по имени и ограничением количества записей
     **Ошибки:**
         - 400: Некорректное значение параметра limit (меньше 1)
@@ -159,8 +165,6 @@ def list_roles(
         {"id": 2, "name": "Director"}
     ]
     """
-    if limit is not None and limit < 1:
-        raise HTTPException(status_code=400, detail="limit must be >= 1")
     query = Role.select()
     if name:
         query = query.where(Role.name.contains(name))
